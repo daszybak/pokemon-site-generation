@@ -10,7 +10,7 @@ type HomeProps = {
   pokemon: Pokemon[];
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const { data: pokemon } = await pokemonApi.get("index.json");
 
   return {
@@ -32,6 +32,7 @@ const Home: NextPage<HomeProps> = ({ pokemon }) => {
             height={500}
             width={500}
           />
+          <button>Click for details</button>
         </article>
       </Link>
     );
