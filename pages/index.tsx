@@ -1,14 +1,27 @@
+import { pokemon as pokemonApi } from "../api/pokemon";
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { useGetPokemonsQuery } from "../redux/api/pokemonApi";
 import Image from "next/image";
 import Link from "next/link";
 
-const Home: NextPage = () => {
-  const { data: pokemon } = useGetPokemonsQuery();
+import type { Pokemon } from "../types/pokemon";
 
-  const renderedPokemon = pokemon?.map(({ id, name, image }) => {
+type HomeProps = {
+  pokemon: Pokemon[];
+};
+
+export const getServerSideProps = async () => {
+  const { data: pokemon } = await pokemonApi.get("index.json");
+
+  return {
+    props: {
+      pokemon,
+    },
+  };
+};
+
+const Home: NextPage<HomeProps> = ({ pokemon }) => {
+  const renderedPokemon = pokemon.map(({ id, name, image }) => {
     return (
       <Link key={id} href={`/pokemon/${id}`}>
         <article>
